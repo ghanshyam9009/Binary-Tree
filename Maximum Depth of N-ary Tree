@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int maxDepth(Node* root) {
+        if (root == nullptr) return 0;
+        queue<Node*> q; q.push(root);
+        int depth = 0;
+        while (!q.empty()) {
+            depth += 1;
+            int breadth = q.size();
+            for (int _ = 0; _ < breadth; ++_) {
+                auto node = q.front(); q.pop();
+                for (auto child : node->children) if (child) q.push(child);
+            }
+        }
+        return depth;
+    }
+};
+
+
+DFS APPROACH
+
+class Solution {
+public:
+    int maxLevel = 0;
+    void dfs(Node* root, int currLevel = 1) {
+        // exit condition
+        if (!root) return;
+        // updating both maxLevel and currLevel at the same time
+        maxLevel = max(maxLevel, currLevel++);
+        // recursing all the way down!
+        for (auto n: root->children) dfs(n, currLevel);
+    }
+    int maxDepth(Node* root) {
+        dfs(root);
+        return maxLevel;
+    }
+};
