@@ -1,0 +1,18 @@
+vector<int> diagonalTraversal(TreeNode<int> *root) {
+    vector<int>ans;
+    queue<TreeNode<int>*>q;
+    q.push(root);
+
+    while(!q.empty()){
+        TreeNode<int>*temp = q.front();
+        q.pop();
+
+        while(temp!=NULL){
+            if(temp->left){
+                q.push(temp->left);
+            }
+            ans.push_back(temp->data);
+            temp=temp->right;
+        }
+    }
+    retur
