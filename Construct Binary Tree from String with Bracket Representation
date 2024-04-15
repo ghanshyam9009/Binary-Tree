@@ -1,0 +1,81 @@
+    // Write your code here
+    BinaryTreeNode<int>* root = new   BinaryTreeNode<int>((str[0]-'0'));
+    stack<BinaryTreeNode<int>*> s;
+    
+
+    for(int i=1;i<str.length();i++){
+        if(str[i]=='('){
+            s.push(root);
+            
+        }else if(str[i]==')'){
+            root=s.top();
+            s.pop();
+        }
+        else{
+            if(!root->left){
+                root->left=new BinaryTreeNode<int>((str[i]-'0'));
+                root=root->left;
+            }else{
+                root->right=new BinaryTreeNode<int>((str[i]-'0'));
+                root=root->right;
+            }
+        }
+    }
+    return root;
+
+}
+
+
+// approach 2
+
+int findIndex(string str, int si, int ei)
+{
+    if (si > ei)
+        return -1;
+ 
+    stack<char> s;
+ 
+    for (int i = si; i <= ei; i++) {
+ 
+        if (str[i] == '(')
+            s.push(str[i]);
+
+        else if (str[i] == ')') {
+            if (s.top() == '(') {
+                s.pop();
+ 
+                if (s.empty())
+                    return i;
+            }
+        }
+    }
+    return -1;
+}
+ 
+
+Node* treeFromString(string str, int si, int ei)
+{
+    if (si > ei)
+        return NULL;
+     
+      int num = 0;
+      while(si <= ei && str[si] >= '0' && str[si] <= '9')
+    {
+      num *= 10;
+      num += (str[si] - '0');
+      si++;
+    }
+
+    Node* root = newNode(num);
+    int index = -1;
+ 
+    if (si <= ei && str[si] == '(')
+        index = findIndex(str, si, ei);
+ 
+    if (index != -1) {
+        root->left = treeFromString(str, si + 1, index - 1);
+        root->right
+            = treeFromString(str, index + 2, ei - 1);
+    }
+    return root;
+}
