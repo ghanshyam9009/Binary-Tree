@@ -1,0 +1,63 @@
+#include <bits/stdc++.h> 
+void f(int ind,vector<int> &arr,int n,vector<int> &inor){
+	if(ind >= n){
+		return;
+	}
+	f(ind*2 + 1,arr,n,inor);
+	inor.push_back(arr[ind]);
+	f(ind*2 + 2,arr,n,inor);
+}
+
+int minimumSwaps(vector<int>&arr, int n) {
+	// Write your code here.
+	vector<int> inor;
+
+	f(0,arr,n,inor);
+
+	vector<pair<int,int>> vp;
+
+	for(int i = 0; i < n; i++){
+		vp.push_back({inor[i],i});
+	}
+
+	sort(vp.begin(),vp.end());
+	
+	int ans = 0;
+	for(int i = 0; i < n; i++){
+		if(vp[i].second != i){
+			swap(vp[i],vp[vp[i].second]);
+			i--;
+			ans++;
+		}
+	}
+	return ans;
+
+}
+
+
+
+// approach2
+
+class Solution {
+public:
+    vector<int> v;
+    int i=0;
+    void inorder(TreeNode* root){
+        if(!root) return;
+        inorder(root->left);
+        v.push_back(root->val);
+        inorder(root->right);
+    }
+    void check(TreeNode* root){
+        if(!root) return;
+        check(root->left);
+        if(v[i]!=root->val) swap(v[i],root->val);
+        i++;
+        check(root->right);
+    }
+    void recoverTree(TreeNode* root) {
+        inorder(root);
+        sort(v.begin(),v.end());
+        check(root);
+    }
+};
