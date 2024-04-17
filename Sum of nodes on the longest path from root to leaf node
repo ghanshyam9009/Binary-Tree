@@ -11,6 +11,57 @@ part of the longest root to leaf path having
 sum = (4 + 2 + 1 + 6) = 13
 
 
+
+
+
+void solve(BinaryTreeNode<int> *root, int sum, int &maxSum, vector<int> &ans, vector<int> &res)
+{
+    // base case
+    if (root == NULL)
+        return ;
+
+    sum = sum + root->data;
+    ans.push_back(root->data);
+
+    if(root -> left == NULL && root -> right == NULL)   
+    {
+        if (sum > maxSum)
+        {
+            res = ans;
+            maxSum = sum;
+        }
+    }
+
+    // recursive calls
+    solve(root->left, sum, maxSum, ans, res);
+    solve(root->right, sum, maxSum, ans, res);
+
+    // Remove the last element when backtracking to explore other paths
+    ans.pop_back();
+}
+
+
+vector<int> maxSum(BinaryTreeNode<int> *root)
+{
+    if (root == NULL)
+        return {};
+
+    // initializations
+    int sum = 0;
+    int maxSum = INT_MIN;
+    vector<int> ans;
+    vector<int> res;
+
+    solve(root, sum, maxSum, ans, res);
+
+    reverse(res.begin(), res.end());
+
+    return res;
+}
+
+
+
+
 appproach 1
 
 // function to get a new node
