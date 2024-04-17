@@ -1,0 +1,111 @@
+        4        
+       / \       
+      2   5      
+     / \ / \     
+    7  1 2  3 
+      /
+     6
+
+The highlighted nodes (4, 2, 1, 6) above are 
+part of the longest root to leaf path having
+sum = (4 + 2 + 1 + 6) = 13
+
+
+appproach 1
+
+// function to get a new node
+Nodes* newNode(int data)
+{
+         // allocating memory for the node
+           Nodes* getNode = (Nodes*)malloc(sizeof(Nodes));
+
+           getNode->data = data;
+           getNode->left = getNode->right = NULL;
+           return getNode;
+}
+
+void SumlongestPath(Nodes* root, int crnt_sum, int length, int& maxLen, int& maxSum)
+{
+           
+           if (!root) {
+                          if (maxLen < length) {
+                                        maxLen = length;
+                                        maxSum = crnt_sum;
+                          } else if (maxLen == length && maxSum < crnt_sum)
+                                        maxSum = crnt_sum;
+                    return;
+                   }
+
+
+SumlongestPath(root->left, crnt_sum + root->data, length + 1, maxLen, maxSum);
+SumlongestPath(root->right, crnt_sum + root->data, length + 1, maxLen, maxSum);
+}
+
+
+int SumlongestPathUtil(Nodes* root)
+{
+             if (!root)
+                return 0;
+             int maxSum = INT_MIN, maxLen = 0;
+             SumlongestPath(root, 0, 0, maxLen, maxSum);
+            return  maxSum;
+}
+
+
+// approach 2
+
+int longestPathLeaf(Node* root){
+
+  struct Element{
+    Node* data;
+    int level;
+    int sum;
+  };
+
+  int maxSumLevel = root->data,maxLevel = 0;
+   
+  list<Element> que;
+  Element e;
+   
+  /* Each element variable stores the current Node, it's level, sum in the path */
+ 
+  e.data = root;
+  e.level = 0;
+  e.sum = root->data;
+   
+
+  que.push_back(e);
+
+  while(!que.empty()){
+ 
+     Element front = que.front();
+     Node* curr = front.data;
+     que.pop_front();
+      
+     if(front.level > maxLevel){
+        maxSumLevel = front.sum;
+        maxLevel = front.level;
+     }
+     else if(front.level == maxLevel && front.sum > maxSumLevel)
+        maxSumLevel = front.sum;
+
+     if(curr->left){
+        e.data = curr->left;
+        e.sum = e.data->data;
+        e.sum +=  front.sum;
+        e.level = front.level+1;
+        que.push_back(e);
+     }
+     
+     if(curr->right){
+        e.data = curr->right;
+        e.sum = e.data->data;
+        e.sum +=  front.sum;
+        e.level = front.level+1;
+        que.push_back(e);
+     }
+  }
+
+  return maxSumLevel;
+}
+
