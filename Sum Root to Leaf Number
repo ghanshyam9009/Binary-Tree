@@ -1,0 +1,54 @@
+Input: root = [4,9,0,5,1]
+Output: 1026
+
+Explanation:
+The root-to-leaf path 4->9->5 represents the number 495.
+The root-to-leaf path 4->9->1 represents the number 491.
+The root-to-leaf path 4->0 represents the number 40.
+Therefore, sum = 495 + 491 + 40 = 1026.
+
+
+class Solution {
+public:
+    int sumNumbers(TreeNode* root, string number = "") {
+        if (!root)
+            return 0;
+
+        number += std::to_string(root->val);
+
+        if (!root->left && !root->right)
+            return stoi(number);
+
+        int result1 = sumNumbers(root->left, number);
+        int result2 = sumNumbers(root->right, number);
+
+        return result1 + result2;
+    }
+};
+
+
+// class Solution {
+// private:
+// void sumIt(TreeNode *root,int &sum,int &result){
+//    if(root->right==NULL and root->left==NULL){
+//        sum=sum*10+root->val;
+//        result+=sum;
+//        sum/=10;
+//        return;
+//    }
+//    sum=sum*10+root->val;
+
+//    if(root->left) sumIt(root->left,sum,result);
+//    if(root->right) sumIt(root->right,sum,result);
+
+//    sum/=10;
+// }
+// public:
+//     int sumNumbers(TreeNode* root) {
+//         int sum=0,result=0;
+
+//         sumIt(root,sum,result);
+
+//         return result;
+//     }
+// };
