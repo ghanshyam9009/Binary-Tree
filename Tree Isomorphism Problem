@@ -1,0 +1,49 @@
+Two trees are called isomorphic if one of them can be obtained from other by a series of flips,
+i.e. by swapping left and right children of a number of nodes. Any number of nodes at any level
+can have their children swapped. Two empty trees are isomorphic.
+
+
+#include <bits/stdc++.h> 
+/*************************************************************
+
+    Following is the Binary Tree node structure
+
+    class BinaryTreeNode
+    {
+    public :
+        T data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+
+        BinaryTreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+*************************************************************/
+
+bool checkTree(BinaryTreeNode<int> *tree1, BinaryTreeNode<int> *tree2) {
+
+  if (tree1 == NULL && tree2 == NULL)
+
+    return true;
+
+  if (tree1 == NULL || tree2 == NULL)
+
+    return false;
+
+  if (tree1->data != tree2->data)
+
+    return false;
+
+  return checkTree(tree1->left, tree2->left) &&
+
+             checkTree(tree1->right, tree2->right) ||
+
+         checkTree(tree1->left, tree2->right) &&
+
+             checkTree(tree1->right, tree2->left);
+
+}
