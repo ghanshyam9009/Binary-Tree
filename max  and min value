@@ -1,0 +1,87 @@
+/**********************************************************
+
+	Following is the Binary Tree Node class structure
+
+	template <typename T>
+	class BinaryTreeNode {
+    	public : 
+    	T data;
+    	BinaryTreeNode<T> *left;
+    	BinaryTreeNode<T> *right;
+
+    	BinaryTreeNode(T data) {
+        	this -> data = data;
+        	left = NULL;
+        	right = NULL;
+    	}
+	};
+
+***********************************************************/
+
+/*
+	The first value of the pair must be the minimum value in the tree and 
+	the second value of the pair must be the maximum value in the tree
+*/
+
+#include <bits/stdc++.h>
+// void solve(BinaryTreeNode<int>* root, int &mini, int &maxi){
+
+//     if(root==NULL)  return;
+
+ 
+
+//     mini = min(mini, root->data);
+
+//     maxi = max(maxi, root->data);
+
+//     solve(root->left, mini, maxi);
+
+//     solve(root->right, mini, maxi);
+
+//     return ;
+
+// }
+
+// pair<int, int> getMinAndMax(BinaryTreeNode<int> *root) {
+
+//     int maxi = INT_MIN;
+
+//     int mini = INT_MAX;
+
+//     solve(root, mini, maxi);
+
+//     return {mini, maxi};
+
+// }
+
+
+
+pair<int, int> getMinAndMax(BinaryTreeNode<int> *root) {
+
+    // Write your code here
+
+    if(root==NULL){
+
+        pair<int, int> p;
+
+        p.first=INT_MAX;
+
+        p.second=INT_MIN;
+
+        return p;
+
+    }
+
+    pair<int, int> leftAns = getMinAndMax(root->left);
+
+    pair<int, int> rightAns=getMinAndMax(root->right);
+
+    pair<int, int> ans;
+
+    ans.first=min(root->data,min(leftAns.first,rightAns.first));
+
+    ans.second=max(root->data,max(leftAns.second,rightAns.second));
+
+    return ans;
+
+}
